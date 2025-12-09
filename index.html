@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Anime Love Puzzle</title>
+<title>Blueprint Love Puzzle</title>
 
 <style>
-/* ===== BODY & BACKGROUND ===== */
+
 body{
     margin:0;
     height:100vh;
@@ -18,13 +18,18 @@ body{
     font-family:"Trebuchet MS",Arial,sans-serif;
     text-align:center;
     overflow:hidden;
-    position:relative;
 }
 
-/* ===== HEADER & BUTTONS ===== */
+/* ===== General UI ===== */
+.center{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
 h1{
-    text-shadow:0 0 15px gold;
-    font-size:2.5rem;
+    text-shadow: 0 0 12px gold;
 }
 
 input,button{
@@ -35,161 +40,142 @@ input,button{
 }
 
 button{
-   background:linear-gradient(45deg,gold,orange);
-   box-shadow:0 0 15px gold;
-   cursor:pointer;
+    background:linear-gradient(45deg,gold,orange);
+    box-shadow:0 0 12px gold;
+    cursor:pointer;
 }
 
-/* ===== SCREENS ===== */
-.screen{
-    display:none;
-}
+/* ===== Screens ===== */
+.screen{ display:none; }
+.active{ display:block; }
 
-.active{
-    display:block;
-}
-
-.center{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-}
-
-/* ===== PUZZLE ===== */
+/* ===== Puzzle ===== */
 #puzzle{
     width:300px;
     height:300px;
-    margin:20px auto;
+    margin:auto;
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:5px;
-    position:relative;
+    gap:4px;
 }
 
 .piece{
-    border-radius:10px;
-    background-image:url("https://i.imgur.com/KQsyAZ2.jpeg");
+    background:url("https://i.imgur.com/KQsyAZ2.jpeg");
     background-size:300px 300px;
+    border-radius:6px;
     cursor:pointer;
-    box-shadow:0 0 10px gold;
-    animation:glow 1.5s infinite alternate;
-    transition:.3s;
 }
 
-.piece:hover{
-    transform:scale(1.05);
-}
+.empty{ background:none; }
 
-@keyframes glow {
-    from { box-shadow:0 0 7px gold}
-    to { box-shadow:0 0 20px gold}
-}
-
-.empty{
-    background:none;
-    box-shadow:none;
-}
-
-/* ===== MESSAGE BOX ===== */
-#messageScreen{
+#blueprintReveal{
     display:none;
+    width:300px;
+    height:300px;
+    position:relative;
+}
+
+/* Blueprint Grid */
+#blueprint{
     position:absolute;
     inset:0;
-    background:#000000f0;
-    padding:20px;
-    overflow:auto;
+    background-color:#0c2447;
+    background-image:
+      linear-gradient(#ffffff22 1px, transparent 1px),
+      linear-gradient(90deg, #ffffff22 1px, transparent 1px);
+    background-size:20px 20px;
+    opacity:1;
+    animation:fadeOut 4s forwards;
 }
 
-#letter{
-    max-width:500px;
-    margin:auto;
-    font-size:1.2rem;
-    line-height:1.6;
-    animation:fadein 2s forwards;
-}
-
-@keyframes fadein {
-    from{opacity:0}
-    to{opacity:1}
-}
-
-#celebrate{
+/* Final Full Color Image */
+#colorReveal{
     position:absolute;
     inset:0;
-    pointer-events:none;
+    background:url("https://i.imgur.com/KQsyAZ2.jpeg") center/cover;
+    animation:drawIn 4s forwards;
 }
 
-/* ===== FLOATING SUNFLOWERS ===== */
+/* Text fade */
+#memoryText{
+    margin-top:20px;
+    animation:textFade 4s forwards;
+}
+
+@keyframes drawIn{
+    0% { filter:grayscale(100%) brightness(40%); clip-path:inset(100% 0 0 0);}
+    100% { filter:grayscale(0); clip-path:inset(0);}
+}
+
+@keyframes fadeOut{
+    to{opacity:0;}
+}
+
+@keyframes textFade{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+/* ===== Floating Effects ===== */
 .sunflower{
     position:absolute;
     width:40px;
     height:40px;
-    background-image:url('https://i.imgur.com/O9B0gXN.png');
-    background-size:contain;
-    background-repeat:no-repeat;
-    pointer-events:none;
+    background:url("https://i.imgur.com/O9B0gXN.png") center/contain no-repeat;
     animation:floatUp linear infinite;
 }
 
 @keyframes floatUp{
-    0% {transform:translateY(100vh) rotate(0deg);}
-    100% {transform:translateY(-50px) rotate(360deg);}
+   from{transform:translateY(110vh) rotate(0deg);}
+   to{transform:translateY(-120px) rotate(360deg);}
 }
 
-/* ===== FLOATING CONSTRUCTION ICONS ===== */
-.construction{
+/* ===== Message Screen ===== */
+#messageScreen{
+    background:#000000e8;
     position:absolute;
-    width:40px;
-    height:40px;
-    background-size:contain;
-    background-repeat:no-repeat;
+    inset:0;
+    display:none;
+}
+
+/* Confetti */
+canvas{
+    position:absolute;
+    inset:0;
     pointer-events:none;
-    animation:floatUp linear infinite;
 }
 
-.hardhat{ background-image:url('https://i.imgur.com/2j0G9LZ.png'); }
-.crane{ background-image:url('https://i.imgur.com/x5U8bF9.png'); }
-
-/* Mobile */
-@media(max-width:600px){
-    #puzzle{
-        width:240px;
-        height:240px;
-        gap:4px;
-    }
-    .piece{
-        background-size:240px 240px;
-    }
-}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
-<div id="loginScreen" class="screen active center">
-    <h1>✨ Secret Anime Portal ✨</h1>
-    <p>Enter the special password…</p>
-    <input id="password" type="password" placeholder="Password">
+<div id="loginScreen" class="active center">
+    <h1>🔐 Enter The Portal</h1>
+    <input type="password" id="password" placeholder="Password">
     <br><br>
-    <button onclick="checkPassword()">UNLOCK ❤️</button>
+    <button onclick="checkPassword()">OPEN ❤️</button>
 </div>
 
 <!-- GAME -->
 <div id="gameScreen" class="screen center">
-     <h1>🧩 Complete The Memory</h1>
-     <p>Rebuild the picture to unlock the secret message</p>
-     <div id="puzzle"></div>
+    <h2>🧩 Build the Memory</h2>
+
+    <div id="puzzle"></div>
+
+    <div id="blueprintReveal">
+        <div id="blueprint"></div>
+        <div id="colorReveal"></div>
+    </div>
+
+    <p id="memoryText"></p>
 </div>
 
-<!-- FINAL REVEAL -->
+<!-- LOVE LETTER -->
 <div id="messageScreen">
-    <div class="center" id="letter">
+    <div class="center">
         <h1>💛 My Love Letter 💛</h1>
         <p id="typingText"></p>
-        <p style="margin-top:30px">
-            🌻 Always yours 🌻
-        </p>
     </div>
     <canvas id="celebrate"></canvas>
 </div>
@@ -198,216 +184,156 @@ button{
 <audio id="win" src="https://www.myinstants.com/media/sounds/anime-wow-sound-effect.mp3"></audio>
 
 <script>
-const PASSWORD = "Pumkin200925";
+
+const PASSWORD="Pumpkin200925";
+
+const memoryLine =
+"💛 Memory unlocked: I am glad I didn't get into the taxi.";
 
 const loveMessage = `
-Hey my love,
+To my favorite future Civil Engineer 🏗️,
 
-We are officially 10 days away from your birthday,
-which also marks 3 months since I met you — my favorite person.
+Watching you build your dreams taught me this:
+love is designed with patience, reinforced by trust,
+and completed with commitment.
 
-Thank you for being such a loving and caring spirit in my life.
-You showed me that good still exists in this world.
+I am grateful for the day that crossed our journeys.
+I am grateful I stayed — and I am grateful for you.
 
-Never stop shining and smiling.
-You are destined for great things.
-
-I can't wait to watch you grow into your best self.
-Me and you until we go into the ground.
-
-Remember: no weapon formed against you will prosper 💛
+🌻 Always yours 🌻
 `;
 
 /* ===== LOGIN ===== */
 function checkPassword(){
-   let value = password.value;
-   if(value === PASSWORD){
-        loginScreen.classList.remove("active");
-        gameScreen.classList.add("active");
-        startGame();
-        createFloatingElements();
-    } else {
-        alert("Wrong password 😭");
-    }
+if(password.value===PASSWORD){
+    loginScreen.style.display="none";
+    gameScreen.classList.add("active");
+    startGame();
+    floatSunflowers();
+}
 }
 
 /* ===== PUZZLE ===== */
-const puzzle = document.getElementById("puzzle");
+const puzzle=document.getElementById("puzzle");
 let positions=[];
 
 function startGame(){
-   positions=[...Array(9).keys()];
-   shuffle(positions);
-   draw();
+positions=[...Array(9).keys()];
+shuffle(positions);
+draw();
 }
 
 function draw(){
-   puzzle.innerHTML="";
-   positions.forEach((pos,i)=>{
-     const tile=document.createElement("div");
-     tile.classList.add("piece");
-     if(pos===8){ tile.classList.add("empty"); }
-     else{
-       const x=(pos %3)*100;
-       const y=Math.floor(pos/3)*100;
-       tile.style.backgroundPosition=`-${x}px -${y}px`;
-     }
-     tile.onclick=()=>move(i);
-     puzzle.appendChild(tile);
-   });
-   checkWin();
+puzzle.innerHTML="";
+positions.forEach((p,i)=>{
+ let d=document.createElement("div");
+ d.className="piece";
+ if(p===8) d.classList.add("empty");
+ else{
+    let x=(p%3)*100;
+    let y=Math.floor(p/3)*100;
+    d.style.backgroundPosition=`-${x}px -${y}px`;
+ }
+ d.onclick=()=>move(i);
+ puzzle.appendChild(d);
+});
+checkWin();
 }
 
 function move(i){
-   click.play();
-   let empty = positions.indexOf(8);
-   const moves = [
-      empty-1, empty+1,
-      empty-3, empty+3,
-      // Diagonal moves
-      empty-4, empty-2,
-      empty+2, empty+4
-   ];
-   if(moves.includes(i)){
-       [positions[i], positions[empty]]=[positions[empty], positions[i]];
-       draw();
-   }
+click.play();
+let e=positions.indexOf(8);
+let moves=[e-1,e+1,e-3,e+3,e-4,e-2,e+2,e+4];
+
+if(moves.includes(i)){
+    [positions[i],positions[e]]=[positions[e],positions[i]];
+    draw();
+}
 }
 
 function checkWin(){
-   for(let i=0;i<9;i++){ if(positions[i]!==i) return; }
-   finishGame();
+for(let i=0;i<9;i++){
+ if(positions[i]!==i) return;
+}
+finish();
 }
 
-/* ===== FINAL ===== */
-function finishGame(){
-   gameScreen.classList.remove("active");
-   messageScreen.style.display="block";
-   win.play();
-   launchConfetti();
-   typeMessage();
-   startBridgeMiniGame();
+/* ===== BLUEPRINT EFFECT ===== */
+function finish(){
+puzzle.style.display="none";
+document.getElementById("blueprintReveal").style.display="block";
+memoryText.textContent=memoryLine;
+win.play();
+
+setTimeout(showLetter,3500);
 }
 
-/* ===== CONFETTI ===== */
-const canvas = celebrate;
-const ctx = canvas.getContext("2d");
-canvas.width=innerWidth;
-canvas.height=innerHeight;
-let confetti=[];
-function launchConfetti(){
-   for(let i=0;i<200;i++){
-       confetti.push({
-           x:Math.random()*canvas.width,
-           y:-10,
-           size:Math.random()*8+2,
-           speed:Math.random()*4+2
-       });
-   }
-   animateConfetti();
-}
-function animateConfetti(){
-   ctx.clearRect(0,0,canvas.width,canvas.height);
-   confetti.forEach(c=>{
-     ctx.fillRect(c.x,c.y,c.size,c.size);
-     c.y+=c.speed;
-     if(c.y>canvas.height) c.y=-10;
-   });
-   requestAnimationFrame(animateConfetti);
+/* ===== LOVE LETTER ===== */
+function showLetter(){
+gameScreen.style.display="none";
+messageScreen.style.display="block";
+confetti();
+type();
 }
 
 /* ===== TYPE EFFECT ===== */
-let i=0;
-function typeMessage(){
-   if(i<loveMessage.length){
-      typingText.textContent+=loveMessage.charAt(i);
-      i++;
-      setTimeout(typeMessage,40);
-   }
+let ti=0;
+function type(){
+if(ti<loveMessage.length){
+ typingText.textContent+=loveMessage.charAt(ti);
+ ti++;
+ setTimeout(type,40);
+}
 }
 
-/* ===== UTILS ===== */
-function shuffle(arr){
-   for(let i=arr.length-1;i>0;i--){
-      let j=Math.floor(Math.random()*(i+1));
-      [arr[i],arr[j]]=[arr[j],arr[i]];
-   }
+/* ===== FLOATING SUNFLOWERS ===== */
+function floatSunflowers(){
+for(let i=0;i<9;i++){
+    let s=document.createElement("div");
+    s.className="sunflower";
+    s.style.left=Math.random()*90+"vw";
+    s.style.animationDuration=(5+Math.random()*5)+"s";
+    document.body.appendChild(s);
+}
 }
 
-/* ===== FLOATING ELEMENTS (SUNFLOWERS + CONSTRUCTION ICONS) ===== */
-function createFloatingElements(){
-    for(let j=0;j<12;j++){
-        // Sunflowers
-        let sf = document.createElement('div');
-        sf.classList.add('sunflower');
-        sf.style.left = Math.random()*90 + 'vw';
-        sf.style.animationDuration = (6+Math.random()*10) + 's';
-        document.body.appendChild(sf);
-        sf.addEventListener('click',()=>{
-            alert("🌻 Surprise! Your hard work in Civil Engineering will build amazing things, just like our love! 💛");
-        });
+/* ===== CONFETTI ===== */
+const ctx=celebrate.getContext("2d");
+celebrate.width=innerWidth;
+celebrate.height=innerHeight;
+let c=[];
 
-        // Construction icons
-        let hc = document.createElement('div');
-        hc.classList.add('construction','hardhat');
-        hc.style.left = Math.random()*90 + 'vw';
-        hc.style.animationDuration = (5+Math.random()*8) + 's';
-        document.body.appendChild(hc);
-
-        let cr = document.createElement('div');
-        cr.classList.add('construction','crane');
-        cr.style.left = Math.random()*90 + 'vw';
-        cr.style.animationDuration = (6+Math.random()*9) + 's';
-        document.body.appendChild(cr);
-    }
+function confetti(){
+for(let i=0;i<200;i++){
+c.push({
+ x:Math.random()*celebrate.width,
+ y:-10,
+ s:Math.random()*6+2,
+ v:Math.random()*4+2
+});
+}
+animate();
 }
 
-/* ===== MINI BRIDGE GAME ===== */
-function startBridgeMiniGame(){
-    // Simple bridge builder using divs
-    const bridgeDiv = document.createElement('div');
-    bridgeDiv.style.position='absolute';
-    bridgeDiv.style.bottom='50px';
-    bridgeDiv.style.left='50%';
-    bridgeDiv.style.transform='translateX(-50%)';
-    bridgeDiv.style.width='300px';
-    bridgeDiv.style.height='100px';
-    bridgeDiv.style.borderTop='3px dashed white';
-    bridgeDiv.style.textAlign='center';
-    bridgeDiv.innerHTML = '<p style="color:gold; font-weight:bold;">Drag the blocks to complete your bridge! 🏗️</p>';
-
-    for(let i=0;i<3;i++){
-        let block = document.createElement('div');
-        block.style.width='60px';
-        block.style.height='20px';
-        block.style.background='orange';
-        block.style.display='inline-block';
-        block.style.margin='0 5px';
-        block.style.cursor='grab';
-        block.draggable=true;
-        block.addEventListener('dragstart',e=>{e.dataTransfer.setData('text',i);});
-        bridgeDiv.appendChild(block);
-    }
-
-    document.body.appendChild(bridgeDiv);
-
-    // Droppable line
-    const dropZone = document.createElement('div');
-    dropZone.style.position='absolute';
-    dropZone.style.bottom='0';
-    dropZone.style.left='50%';
-    dropZone.style.transform='translateX(-50%)';
-    dropZone.style.width='300px';
-    dropZone.style.height='30px';
-    dropZone.style.border='2px dashed gold';
-    document.body.appendChild(dropZone);
-
-    dropZone.addEventListener('dragover',e=>{e.preventDefault();});
-    dropZone.addEventListener('drop',e=>{
-        e.preventDefault();
-        alert("🏗️ Great! Your bridge is complete, just like our love! 💛");
-    });
+function animate(){
+ctx.clearRect(0,0,celebrate.width,celebrate.height);
+c.forEach(p=>{
+ctx.fillRect(p.x,p.y,p.s,p.s);
+p.y+=p.v;
+if(p.y>celebrate.height) p.y=-10;
+});
+requestAnimationFrame(animate);
 }
+
+/* ===== SHUFFLE ===== */
+function shuffle(a){
+for(let i=a.length-1;i>0;i--){
+ let j=Math.floor(Math.random()*(i+1));
+ [a[i],a[j]]=[a[j],a[i]];
+}
+}
+
 </script>
+
 </body>
 </html>
