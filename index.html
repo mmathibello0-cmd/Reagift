@@ -297,11 +297,15 @@ function draw(){
     checkWin();
 }
 
+// Updated move function: allow horizontal, vertical, and diagonal moves
 function move(i){
-    let e=pos.indexOf(8);
-    let moves=[e-1,e+1,e-3,e+3];
-    if(moves.includes(i)){
-        [pos[i],pos[e]]=[pos[e],pos[i]];
+    let e = pos.indexOf(8);
+    let eRow = Math.floor(e/3), eCol = e%3;
+    let iRow = Math.floor(i/3), iCol = i%3;
+
+    // Move allowed if the clicked piece is a neighbor of the empty spot (including diagonal)
+    if(Math.abs(eRow - iRow) <= 1 && Math.abs(eCol - iCol) <= 1 && i !== e){
+        [pos[i], pos[e]] = [pos[e], pos[i]];
         draw();
     }
 }
