@@ -2,163 +2,253 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Our Memory Puzzle 💛</title>
+<title>Our Magical Memory 💛</title>
 
 <style>
 
 body{
-    margin:0;
-    height:100vh;
-    background:
-      linear-gradient(135deg,#000000cc,#00000099),
-      url("https://i.imgur.com/Rmd9Ns1.jpeg");
-    background-size:cover;
-    background-position:center;
-    color:white;
-    font-family:"Trebuchet MS",Arial,sans-serif;
-    text-align:center;
-    overflow:hidden;
+ margin:0;
+ height:100vh;
+ background:
+   linear-gradient(135deg,#000000cc,#00000099),
+   url("https://i.imgur.com/Rmd9Ns1.jpeg");
+ background-size:cover;
+ background-position:center;
+ color:white;
+ font-family:"Trebuchet MS",Arial,sans-serif;
+ text-align:center;
+ overflow:hidden;
 }
 
 .center{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
+ position:absolute;
+ top:50%;
+ left:50%;
+ transform:translate(-50%,-50%);
 }
 
-h1{
-    text-shadow:0 0 10px gold;
+h1,h2{
+ text-shadow:0 0 10px gold;
 }
 
 input,button{
-    padding:12px 18px;
-    font-size:18px;
-    border-radius:10px;
-    border:none;
+ padding:12px 18px;
+ font-size:18px;
+ border-radius:10px;
+ border:none;
 }
 
 button{
-   background:linear-gradient(45deg,gold,orange);
-   box-shadow:0 0 12px gold;
-   cursor:pointer;
+ background:linear-gradient(45deg,gold,orange);
+ box-shadow:0 0 12px gold;
+ cursor:pointer;
+ color:black;
 }
+
+/* Screens */
 
 .screen{display:none;}
 .active{display:block}
 
-/* ===== PUZZLE ===== */
+/* Puzzle */
 
 #puzzle{
-    width:300px;
-    height:300px;
-    margin:auto;
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:4px;
+ width:300px;
+ height:300px;
+ margin:auto;
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:4px;
 }
 
 .piece{
-    background:url("https://i.imgur.com/KQsyAZ2.jpeg");
-    background-size:300px 300px;
-    border-radius:6px;
-    cursor:pointer;
+ background:url("https://i.imgur.com/KQsyAZ2.jpeg");
+ background-size:300px 300px;
+ border-radius:8px;
+ cursor:pointer;
+ transition:transform .15s;
 }
 
-.empty{background:none;}
+.piece:hover{ transform:scale(1.03); }
 
-/* ===== BLUEPRINT ===== */
+.empty{background:none}
+
+/* Blueprint Effect */
 
 #blueprintReveal{
-    display:none;
-    width:300px;
-    height:300px;
-    margin:auto;
-    position:relative;
+ display:none;
+ width:300px;
+ height:300px;
+ margin:auto;
+ position:relative;
 }
 
 #blueprint{
-    position:absolute;
-    inset:0;
-    background:#0c2447;
-    background-image:
-     linear-gradient(#ffffff22 1px, transparent 1px),
-     linear-gradient(90deg,#ffffff22 1px, transparent 1px);
-    background-size: 20px 20px;
-    animation:fade 4s forwards;
+ position:absolute;
+ inset:0;
+ background:#0c2447;
+ background-image:
+   linear-gradient(#ffffff22 1px, transparent 1px),
+   linear-gradient(90deg,#ffffff22 1px, transparent 1px);
+ background-size:20px 20px;
+ animation:fade 4s forwards;
 }
 
 #colorReveal{
-    position:absolute;
-    inset:0;
-    background:url("https://i.imgur.com/KQsyAZ2.jpeg") center/cover;
-    animation:draw 4s forwards;
+ position:absolute;
+ inset:0;
+ background:url("https://i.imgur.com/KQsyAZ2.jpeg") center/cover;
+ animation:draw 4s forwards;
 }
 
 @keyframes draw{
- from{filter:grayscale(100%) brightness(40%); clip-path:inset(100% 0 0 0);}
- to{filter:none; clip-path:inset(0);}
+ from{filter:grayscale(100%) brightness(40%);clip-path:inset(100% 0 0 0);}
+ to{filter:none;clip-path:inset(0);}
 }
 
 @keyframes fade{
- to{opacity:0;}
+ to{opacity:0}
 }
+
+/* Magical Memory Text */
 
 #memoryText{
-    margin-top:15px;
-    font-size:18px;
-    animation:fadeTxt 3s forwards;
+ margin-top:18px;
+ font-size:22px;
+ color:gold;
+ text-shadow:
+  0 0 5px gold,
+  0 0 12px orange,
+  0 0 22px gold;
+ animation:
+  memoryFade 3s ease forwards,
+  float 3s ease-in-out infinite alternate;
 }
 
-@keyframes fadeTxt{
- from{opacity:0;}
- to{opacity:1;}
+/* Animations */
+
+@keyframes memoryFade{
+ from{opacity:0; transform:translateY(20px);}
+ to{opacity:1; transform:translateY(0);}
 }
 
-/* ===== SUNFLOWERS ===== */
+@keyframes float{
+ from{transform:translateY(0);}
+ to{transform:translateY(-10px);}
+}
+
+/* Sparkles */
+
+.sparkle{
+ position:absolute;
+ width:6px;
+ height:6px;
+ background:gold;
+ border-radius:50%;
+ box-shadow:0 0 10px gold;
+ animation:twinkle 1.5s infinite alternate;
+}
+
+@keyframes twinkle{
+ from{opacity:.3; transform:scale(.5);}
+ to{opacity:1; transform:scale(1.6);}
+}
+
+/* Floating Sunflowers */
 
 .sunflower{
-    position:absolute;
-    width:40px;
-    height:40px;
-    background:url("https://i.imgur.com/O9B0gXN.png") center/contain no-repeat;
-    animation:floatUp linear infinite;
+ position:absolute;
+ width:36px;
+ height:36px;
+ background:url("https://i.imgur.com/O9B0gXN.png") center/contain no-repeat;
+ animation:floatUp linear infinite;
 }
 
 @keyframes floatUp{
-   from{transform:translateY(110vh) rotate(0deg);}
-   to{transform:translateY(-120px) rotate(360deg);}
+ from{transform:translateY(110vh) rotate(0deg);}
+ to{transform:translateY(-120px) rotate(360deg);}
 }
 
-/* ===== LOVE LETTER ===== */
+/* Love Letter Screen */
 
 #letterScreen{
-    position:absolute;
-    inset:0;
-    background:#000000eb;
-    display:none;
+ position:absolute;
+ inset:0;
+ background:#000000eb;
+ display:none;
 }
+
+/* Confetti */
 
 canvas{
-    position:absolute;
-    inset:0;
-    pointer-events:none;
+ position:absolute;
+ inset:0;
+ pointer-events:none;
 }
 
-/* ===== REPLAY ===== */
+/* Replay Ending */
 
 #replayScreen{
-    position:absolute;
-    inset:0;
-    background:#000000ee;
-    display:none;
+ position:absolute;
+ inset:0;
+ background:#000000ee;
+ display:none;
 }
 
-#finalPic{
-    margin-top:40px;
-    max-width:300px;
-    border-radius:12px;
-    box-shadow:0 0 15px gold;
+.heart{
+ width:140px;
+ height:140px;
+ background:red;
+ transform:rotate(45deg);
+ margin:80px auto 0 auto;
+ position:relative;
+ animation:pulse 1.8s infinite;
+ box-shadow:0 0 30px #ff4d4d;
+}
+
+.heart::before,
+.heart::after{
+ content:"";
+ width:140px;
+ height:140px;
+ background:red;
+ position:absolute;
+ border-radius:50%;
+}
+
+.heart::before{
+ top:-70px;
+ left:0;
+}
+
+.heart::after{
+ left:-70px;
+ top:0;
+}
+
+@keyframes pulse{
+ 0%{transform:rotate(45deg) scale(1);}
+ 50%{transform:rotate(45deg) scale(1.2);}
+ 100%{transform:rotate(45deg) scale(1);}
+}
+
+.glow-text{
+ margin-top:40px;
+ font-size:22px;
+ color:gold;
+ text-shadow:0 0 10px gold,0 0 20px orange;
+}
+
+/* Mobile */
+
+@media(max-width:600px){
+ #puzzle,#blueprintReveal{
+  width:240px;
+  height:240px;
+ }
+ .piece{
+  background-size:240px 240px;
+ }
 }
 
 </style>
@@ -167,6 +257,7 @@ canvas{
 <body>
 
 <!-- LOGIN -->
+
 <div id="login" class="screen active center">
 <h1>🔐 Enter the Portal</h1>
 <input id="pass" type="password" placeholder="Password">
@@ -174,42 +265,51 @@ canvas{
 <button onclick="check()">UNLOCK ❤️</button>
 </div>
 
+
 <!-- GAME -->
+
 <div id="game" class="screen center">
 <h2>🧩 Build the Memory</h2>
+
 <div id="puzzle"></div>
 
 <div id="blueprintReveal">
-<div id="blueprint"></div>
-<div id="colorReveal"></div>
+ <div id="blueprint"></div>
+ <div id="colorReveal"></div>
 </div>
 
 <p id="memoryText"></p>
 </div>
 
-<!-- LETTER -->
+
+<!-- LOVE LETTER -->
+
 <div id="letterScreen">
 <div class="center">
 <h1>💛 My Love Letter 💛</h1>
 <p id="typing"></p>
 <br><br>
-<button onclick="replay()">🔁 Tap To Replay Memory</button>
+<button onclick="replay()">🔁 Tap to Replay Memory</button>
 </div>
 <canvas id="celebrate"></canvas>
 </div>
 
-<!-- REPLAY SCREEN -->
-<div id="replayScreen" class="center">
-<img id="finalPic" src="https://i.imgur.com/OdKMbqz.png">
-<h2>💛 To more smiles shared 💛</h2>
+
+<!-- REPLAY -->
+
+<div id="replayScreen">
+<div class="heart"></div>
+<div class="glow-text">💛 To more smiles shared 💛</div>
 </div>
+
 
 <audio id="click" src="https://www.myinstants.com/media/sounds/minecraft_click.mp3"></audio>
 <audio id="win" src="https://www.myinstants.com/media/sounds/anime-wow-sound-effect.mp3"></audio>
 
+
 <script>
 
-const PASSWORD = "Pumpkin200925";
+const PASSWORD="Pumpkin200925";
 
 const loveMessage = `
 Hey my love,
@@ -229,20 +329,24 @@ Me and you until we go into the ground.
 Remember: no weapon formed against you will prosper 💛
 `;
 
-const memoryLine="💛 I am glad I didn't get into the taxi";
+const memoryLine="✨ 💛 I am glad I didn't get into the taxi 💛 ✨";
 
-/* ===== LOGIN ===== */
+
+/* Login */
+
 function check(){
-if(pass.value===PASSWORD){
- login.style.display="none";
- game.classList.add("active");
- start();
- suns();
-}
-else alert("Wrong password 😭");
+ if(pass.value===PASSWORD){
+  login.style.display="none";
+  game.classList.add("active");
+  start();
+  suns();
+ }
+ else alert("Wrong password 😭");
 }
 
-/* ===== PUZZLE ===== */
+
+/* Puzzle */
+
 const puzzle=document.getElementById("puzzle");
 let pos=[];
 
@@ -257,7 +361,7 @@ function draw(){
  pos.forEach((p,i)=>{
   let d=document.createElement("div");
   d.className="piece";
-  
+
   if(p===8){
    d.classList.add("empty");
   } else{
@@ -265,7 +369,7 @@ function draw(){
    let y=Math.floor(p/3)*100;
    d.style.backgroundPosition=`-${x}px -${y}px`;
   }
-  
+
   d.onclick=()=>move(i);
   puzzle.appendChild(d);
  });
@@ -290,16 +394,39 @@ function checkWin(){
  finish();
 }
 
-/* ===== FINISH ===== */
+
+/* Finish & Memory */
+
 function finish(){
  puzzle.style.display="none";
  blueprintReveal.style.display="block";
  memoryText.textContent=memoryLine;
  win.play();
+
+ setTimeout(summonSparkles,800);
  setTimeout(showLetter,3500);
 }
 
-/* ===== LETTER ===== */
+
+/* Sparkles */
+
+function summonSparkles(){
+
+ for(let i=0;i<14;i++){
+  let s=document.createElement("div");
+  s.className="sparkle";
+
+  s.style.left=(window.innerWidth/2 + Math.random()*150 - 75)+"px";
+  s.style.top=(blueprintReveal.offsetTop + 170 + Math.random()*40)+"px";
+
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),4000);
+ }
+}
+
+
+/* Love Letter */
+
 let t=0;
 function showLetter(){
  game.style.display="none";
@@ -316,13 +443,17 @@ function type(){
  }
 }
 
-/* ===== REPLAY ===== */
+
+/* Replay */
+
 function replay(){
  letterScreen.style.display="none";
  replayScreen.style.display="block";
 }
 
-/* ===== SUNFLOWERS ===== */
+
+/* Sunflowers */
+
 function suns(){
  for(let i=0;i<10;i++){
   let s=document.createElement("div");
@@ -333,7 +464,9 @@ function suns(){
  }
 }
 
-/* ===== CONFETTI ===== */
+
+/* Confetti */
+
 const ctx=celebrate.getContext("2d");
 celebrate.width=innerWidth;
 celebrate.height=innerHeight;
@@ -352,7 +485,7 @@ function confetti(){
 }
 
 function animate(){
- ctx.clearRect(0,0,celebrate.width,celebrate.height);
+ ctx.clearRect(0,0,celeate.width,celeate.height);
  c.forEach(p=>{
   ctx.fillRect(p.x,p.y,p.s,p.s);
   p.y+=p.v;
@@ -361,7 +494,9 @@ function animate(){
  requestAnimationFrame(animate);
 }
 
-/* ===== SHUFFLE ===== */
+
+/* Shuffle */
+
 function shuffle(a){
  for(let i=a.length-1;i>0;i--){
   let j=Math.floor(Math.random()*(i+1));
