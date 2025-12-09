@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Blueprint Love Puzzle</title>
+<title>Our Memory Puzzle 💛</title>
 
 <style>
 
@@ -20,7 +20,6 @@ body{
     overflow:hidden;
 }
 
-/* ===== General UI ===== */
 .center{
     position:absolute;
     top:50%;
@@ -29,7 +28,7 @@ body{
 }
 
 h1{
-    text-shadow: 0 0 12px gold;
+    text-shadow:0 0 10px gold;
 }
 
 input,button{
@@ -40,16 +39,16 @@ input,button{
 }
 
 button{
-    background:linear-gradient(45deg,gold,orange);
-    box-shadow:0 0 12px gold;
-    cursor:pointer;
+   background:linear-gradient(45deg,gold,orange);
+   box-shadow:0 0 12px gold;
+   cursor:pointer;
 }
 
-/* ===== Screens ===== */
-.screen{ display:none; }
-.active{ display:block; }
+.screen{display:none;}
+.active{display:block}
 
-/* ===== Puzzle ===== */
+/* ===== PUZZLE ===== */
+
 #puzzle{
     width:300px;
     height:300px;
@@ -66,57 +65,58 @@ button{
     cursor:pointer;
 }
 
-.empty{ background:none; }
+.empty{background:none;}
+
+/* ===== BLUEPRINT ===== */
 
 #blueprintReveal{
     display:none;
     width:300px;
     height:300px;
+    margin:auto;
     position:relative;
 }
 
-/* Blueprint Grid */
 #blueprint{
     position:absolute;
     inset:0;
-    background-color:#0c2447;
+    background:#0c2447;
     background-image:
-      linear-gradient(#ffffff22 1px, transparent 1px),
-      linear-gradient(90deg, #ffffff22 1px, transparent 1px);
-    background-size:20px 20px;
-    opacity:1;
-    animation:fadeOut 4s forwards;
+     linear-gradient(#ffffff22 1px, transparent 1px),
+     linear-gradient(90deg,#ffffff22 1px, transparent 1px);
+    background-size: 20px 20px;
+    animation:fade 4s forwards;
 }
 
-/* Final Full Color Image */
 #colorReveal{
     position:absolute;
     inset:0;
     background:url("https://i.imgur.com/KQsyAZ2.jpeg") center/cover;
-    animation:drawIn 4s forwards;
+    animation:draw 4s forwards;
 }
 
-/* Text fade */
+@keyframes draw{
+ from{filter:grayscale(100%) brightness(40%); clip-path:inset(100% 0 0 0);}
+ to{filter:none; clip-path:inset(0);}
+}
+
+@keyframes fade{
+ to{opacity:0;}
+}
+
 #memoryText{
-    margin-top:20px;
-    animation:textFade 4s forwards;
+    margin-top:15px;
+    font-size:18px;
+    animation:fadeTxt 3s forwards;
 }
 
-@keyframes drawIn{
-    0% { filter:grayscale(100%) brightness(40%); clip-path:inset(100% 0 0 0);}
-    100% { filter:grayscale(0); clip-path:inset(0);}
+@keyframes fadeTxt{
+ from{opacity:0;}
+ to{opacity:1;}
 }
 
-@keyframes fadeOut{
-    to{opacity:0;}
-}
+/* ===== SUNFLOWERS ===== */
 
-@keyframes textFade{
-    from{opacity:0;}
-    to{opacity:1;}
-}
-
-/* ===== Floating Effects ===== */
 .sunflower{
     position:absolute;
     width:40px;
@@ -130,54 +130,78 @@ button{
    to{transform:translateY(-120px) rotate(360deg);}
 }
 
-/* ===== Message Screen ===== */
-#messageScreen{
-    background:#000000e8;
+/* ===== LOVE LETTER ===== */
+
+#letterScreen{
     position:absolute;
     inset:0;
+    background:#000000eb;
     display:none;
 }
 
-/* Confetti */
 canvas{
     position:absolute;
     inset:0;
     pointer-events:none;
 }
 
+/* ===== REPLAY ===== */
+
+#replayScreen{
+    position:absolute;
+    inset:0;
+    background:#000000ee;
+    display:none;
+}
+
+#finalPic{
+    margin-top:40px;
+    max-width:300px;
+    border-radius:12px;
+    box-shadow:0 0 15px gold;
+}
+
 </style>
 </head>
+
 <body>
 
 <!-- LOGIN -->
-<div id="loginScreen" class="active center">
-    <h1>🔐 Enter The Portal</h1>
-    <input type="password" id="password" placeholder="Password">
-    <br><br>
-    <button onclick="checkPassword()">OPEN ❤️</button>
+<div id="login" class="screen active center">
+<h1>🔐 Enter the Portal</h1>
+<input id="pass" type="password" placeholder="Password">
+<br><br>
+<button onclick="check()">UNLOCK ❤️</button>
 </div>
 
 <!-- GAME -->
-<div id="gameScreen" class="screen center">
-    <h2>🧩 Build the Memory</h2>
+<div id="game" class="screen center">
+<h2>🧩 Build the Memory</h2>
+<div id="puzzle"></div>
 
-    <div id="puzzle"></div>
-
-    <div id="blueprintReveal">
-        <div id="blueprint"></div>
-        <div id="colorReveal"></div>
-    </div>
-
-    <p id="memoryText"></p>
+<div id="blueprintReveal">
+<div id="blueprint"></div>
+<div id="colorReveal"></div>
 </div>
 
-<!-- LOVE LETTER -->
-<div id="messageScreen">
-    <div class="center">
-        <h1>💛 My Love Letter 💛</h1>
-        <p id="typingText"></p>
-    </div>
-    <canvas id="celebrate"></canvas>
+<p id="memoryText"></p>
+</div>
+
+<!-- LETTER -->
+<div id="letterScreen">
+<div class="center">
+<h1>💛 My Love Letter 💛</h1>
+<p id="typing"></p>
+<br><br>
+<button onclick="replay()">🔁 Tap To Replay Memory</button>
+</div>
+<canvas id="celebrate"></canvas>
+</div>
+
+<!-- REPLAY SCREEN -->
+<div id="replayScreen" class="center">
+<img id="finalPic" src="https://i.imgur.com/OdKMbqz.png">
+<h2>💛 To more smiles shared 💛</h2>
 </div>
 
 <audio id="click" src="https://www.myinstants.com/media/sounds/minecraft_click.mp3"></audio>
@@ -185,116 +209,128 @@ canvas{
 
 <script>
 
-const PASSWORD="Pumpkin200925";
-
-const memoryLine =
-"💛 Memory unlocked: I am glad I didn't get into the taxi.";
+const PASSWORD = "Pumpkin200925";
 
 const loveMessage = `
-To my favorite future Civil Engineer 🏗️,
+Hey my love,
 
-Watching you build your dreams taught me this:
-love is designed with patience, reinforced by trust,
-and completed with commitment.
+We are officially 10 days away from your birthday,
+which also marks 3 months since I met you — my favorite person.
 
-I am grateful for the day that crossed our journeys.
-I am grateful I stayed — and I am grateful for you.
+Thank you for being such a loving and caring spirit in my life.
+You showed me that good still exists in this world.
 
-🌻 Always yours 🌻
+Never stop shining and smiling.
+You are destined for great things.
+
+I can't wait to watch you grow into your best self.
+Me and you until we go into the ground.
+
+Remember: no weapon formed against you will prosper 💛
 `;
 
+const memoryLine="💛 I am glad I didn't get into the taxi";
+
 /* ===== LOGIN ===== */
-function checkPassword(){
-if(password.value===PASSWORD){
-    loginScreen.style.display="none";
-    gameScreen.classList.add("active");
-    startGame();
-    floatSunflowers();
+function check(){
+if(pass.value===PASSWORD){
+ login.style.display="none";
+ game.classList.add("active");
+ start();
+ suns();
 }
+else alert("Wrong password 😭");
 }
 
 /* ===== PUZZLE ===== */
 const puzzle=document.getElementById("puzzle");
-let positions=[];
+let pos=[];
 
-function startGame(){
-positions=[...Array(9).keys()];
-shuffle(positions);
-draw();
+function start(){
+ pos=[...Array(9).keys()];
+ shuffle(pos);
+ draw();
 }
 
 function draw(){
-puzzle.innerHTML="";
-positions.forEach((p,i)=>{
- let d=document.createElement("div");
- d.className="piece";
- if(p===8) d.classList.add("empty");
- else{
-    let x=(p%3)*100;
-    let y=Math.floor(p/3)*100;
-    d.style.backgroundPosition=`-${x}px -${y}px`;
- }
- d.onclick=()=>move(i);
- puzzle.appendChild(d);
-});
-checkWin();
+ puzzle.innerHTML="";
+ pos.forEach((p,i)=>{
+  let d=document.createElement("div");
+  d.className="piece";
+  
+  if(p===8){
+   d.classList.add("empty");
+  } else{
+   let x=(p%3)*100;
+   let y=Math.floor(p/3)*100;
+   d.style.backgroundPosition=`-${x}px -${y}px`;
+  }
+  
+  d.onclick=()=>move(i);
+  puzzle.appendChild(d);
+ });
+ checkWin();
 }
 
 function move(i){
-click.play();
-let e=positions.indexOf(8);
-let moves=[e-1,e+1,e-3,e+3,e-4,e-2,e+2,e+4];
+ click.play();
+ let e=pos.indexOf(8);
+ let moves=[e-1,e+1,e-3,e+3,e-4,e-2,e+2,e+4];
 
-if(moves.includes(i)){
-    [positions[i],positions[e]]=[positions[e],positions[i]];
-    draw();
-}
+ if(moves.includes(i)){
+  [pos[i],pos[e]]=[pos[e],pos[i]];
+  draw();
+ }
 }
 
 function checkWin(){
-for(let i=0;i<9;i++){
- if(positions[i]!==i) return;
-}
-finish();
+ for(let i=0;i<9;i++){
+  if(pos[i]!==i) return;
+ }
+ finish();
 }
 
-/* ===== BLUEPRINT EFFECT ===== */
+/* ===== FINISH ===== */
 function finish(){
-puzzle.style.display="none";
-document.getElementById("blueprintReveal").style.display="block";
-memoryText.textContent=memoryLine;
-win.play();
-
-setTimeout(showLetter,3500);
+ puzzle.style.display="none";
+ blueprintReveal.style.display="block";
+ memoryText.textContent=memoryLine;
+ win.play();
+ setTimeout(showLetter,3500);
 }
 
-/* ===== LOVE LETTER ===== */
+/* ===== LETTER ===== */
+let t=0;
 function showLetter(){
-gameScreen.style.display="none";
-messageScreen.style.display="block";
-confetti();
-type();
+ game.style.display="none";
+ letterScreen.style.display="block";
+ confetti();
+ type();
 }
 
-/* ===== TYPE EFFECT ===== */
-let ti=0;
 function type(){
-if(ti<loveMessage.length){
- typingText.textContent+=loveMessage.charAt(ti);
- ti++;
- setTimeout(type,40);
-}
+ if(t<loveMessage.length){
+  typing.textContent+=loveMessage.charAt(t);
+  t++;
+  setTimeout(type,40);
+ }
 }
 
-/* ===== FLOATING SUNFLOWERS ===== */
-function floatSunflowers(){
-for(let i=0;i<9;i++){
-    let s=document.createElement("div");
-    s.className="sunflower";
-    s.style.left=Math.random()*90+"vw";
-    s.style.animationDuration=(5+Math.random()*5)+"s";
-    document.body.appendChild(s);
+/* ===== REPLAY ===== */
+function replay(){
+ letterScreen.style.display="none";
+ replayScreen.style.display="block";
 }
+
+/* ===== SUNFLOWERS ===== */
+function suns(){
+ for(let i=0;i<10;i++){
+  let s=document.createElement("div");
+  s.className="sunflower";
+  s.style.left=Math.random()*90+"vw";
+  s.style.animationDuration=(5+Math.random()*5)+"s";
+  document.body.appendChild(s);
+ }
 }
 
 /* ===== CONFETTI ===== */
@@ -304,36 +340,35 @@ celebrate.height=innerHeight;
 let c=[];
 
 function confetti(){
-for(let i=0;i<200;i++){
-c.push({
- x:Math.random()*celebrate.width,
- y:-10,
- s:Math.random()*6+2,
- v:Math.random()*4+2
-});
-}
-animate();
+ for(let i=0;i<200;i++){
+  c.push({
+   x:Math.random()*celebrate.width,
+   y:-10,
+   s:Math.random()*4+2,
+   v:Math.random()*3+2
+  });
+ }
+ animate();
 }
 
 function animate(){
-ctx.clearRect(0,0,celebrate.width,celebrate.height);
-c.forEach(p=>{
-ctx.fillRect(p.x,p.y,p.s,p.s);
-p.y+=p.v;
-if(p.y>celebrate.height) p.y=-10;
-});
-requestAnimationFrame(animate);
+ ctx.clearRect(0,0,celebrate.width,celebrate.height);
+ c.forEach(p=>{
+  ctx.fillRect(p.x,p.y,p.s,p.s);
+  p.y+=p.v;
+  if(p.y>celebrate.height) p.y=-10;
+ });
+ requestAnimationFrame(animate);
 }
 
 /* ===== SHUFFLE ===== */
 function shuffle(a){
-for(let i=a.length-1;i>0;i--){
- let j=Math.floor(Math.random()*(i+1));
- [a[i],a[j]]=[a[j],a[i]];
-}
+ for(let i=a.length-1;i>0;i--){
+  let j=Math.floor(Math.random()*(i+1));
+  [a[i],a[j]]=[a[j],a[i]];
+ }
 }
 
 </script>
-
 </body>
 </html>
